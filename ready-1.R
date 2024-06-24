@@ -89,3 +89,4 @@ heatmap.2(a,lmat = lmat_a, lwid = lwid_a,lhei = lhei_a, Rowv = FALSE, Colv = TRU
 dev.off() 
 
 print(a)
+print(y)

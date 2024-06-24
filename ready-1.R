@@ -4,7 +4,7 @@ library(Kendall)
 library(ggplot2)
 library(gplots)
  
-setwd('F:/R/HT/HT_MJ')
+setwd('C:/R_scripts/HT_R')
 
 pet.daily <- read.table('per.daily.txt', header = TRUE)
 
@@ -86,5 +86,6 @@ heatmap.2(a,lmat = lmat_a, lwid = lwid_a,lhei = lhei_a, Rowv = FALSE, Colv = TRU
           col = my_palette, breaks = c(seq(-1, 1, by = 0.1)), key = TRUE)
   
 
-dev.off()
+dev.off() 
 
+print(a)

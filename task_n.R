@@ -2,7 +2,7 @@
 # Created: March 12 2024
 # Author: OH
 
-setwd('C:/R_scripts/R_course/Task_5')
+setwd('C:/Users/PC/Documents/HT_R')
 library(readr)
 T <- read_csv("T.csv")
 T
@@ -14,7 +14,7 @@ elevation <- c(1118,425,804,483,377,777,772,675,577,328,593,498,748,1322,387,436
 
 #############
 library(sirad)
-setwd('C:/R_scripts/R_course/Task_5')
+setwd('C:/Users/PC/Documents/HT_R')
 Temp <- read.csv('T.csv', header = TRUE, sep = ',')
 
 
@@ -91,7 +91,7 @@ slope <- summary(lingrese)$coefficient[2,1]
 
 
 
-png('pet_elevevation3.png',width = 2000, height = 2000)
+png('pet_elevevation34.png',width = 2000, height = 2000)
 par(cex=5)
 plot(elevation,y * 0.000001, pch=16,xlab = 'Elevation [m.a.s.l.]', 
      ylab= 'Mean annual PET')

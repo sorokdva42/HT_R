@@ -1,10 +1,8 @@
 # Assuming the correct script for setting up the environment and reading data
 rm(list = ls())
-library(Kendall)
-library(ggplot2)
-library(gplots)
+library(Kendall); library(ggplot2); library(gplots)
  
-setwd('C:/R_scripts/HT_R')
+setwd('C:/Users/PC/Documents/HT_R') # set working directoty 
 
 pet.daily <- read.table('per.daily.txt', header = TRUE)
 
@@ -88,5 +86,4 @@ heatmap.2(a,lmat = lmat_a, lwid = lwid_a,lhei = lhei_a, Rowv = FALSE, Colv = TRU
 
 dev.off() 
 
-print(a)
-print(y)
+

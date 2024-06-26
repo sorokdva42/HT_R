@@ -1,39 +1,38 @@
 # Assuming the correct script for setting up the environment and reading data
-rm(list = ls())
-library(Kendall); library(ggplot2); library(gplots)
+rm(list = ls()) # clear environment  
+library(Kendall); library(ggplot2); library(gplots) # export libraries
  
-setwd('C:/Users/PC/Documents/HT_R') # set working directoty 
+setwd('C:/Users/PC/Documents/HT_R') # set working directory 
 
-pet.daily <- read.table('per.daily.txt', header = TRUE)
+pet.daily <- read.table('per.daily.txt', header = TRUE) # read table
 
-station.names <- names(pet.daily[5:length(pet.daily)])
-no.stations <- length(station.names)
+station.names <- names(pet.daily[5:length(pet.daily)]) # set station names from pet.daily started from 5
+no.stations <- length(station.names) # number of station  
 
-# Monthly trend
-pet.monthly <- aggregate(pet.daily[, 5:ncol(pet.daily)],
-                         by = list(pet.daily$Month, pet.daily$Year),
-                         FUN = sum)
 
-pet.annual <- aggregate(pet.daily[, 2:ncol(pet.daily)],
-                        by = list(pet.daily$Month, pet.daily$Year),
-                        FUN = sum)
+pet.monthly <- aggregate(pet.daily[, 5:ncol(pet.daily)], # aggregate staring from 5 column in pet.daily
+                         by = list(pet.daily$Month, pet.daily$Year), # aggregation predicate  by month and Year
+                         FUN = sum) # function summarize 
 
-pet.annual_check <- aggregate(pet.daily[, 2:ncol(pet.daily)],
-                              by = list(pet.daily$Year),
-                              FUN = sum)
+pet.annual <- aggregate(pet.daily[, 2:ncol(pet.daily)], # aggregate staring from 2 column in pet.daily
+                        by = list(pet.daily$Month, pet.daily$Year), # aggregation predicate  by month and Year
+                        FUN = sum) # function summarize 
 
-pet.trend.monthly <- data.frame(matrix(nrow = 12, ncol = no.stations))
-pet.trend.annual <- data.frame(matrix(nrow = 34, ncol = no.stations))
+# next code just need to understand how many years in pet.annual
+pet.annual_check <- unique(pet.annual$Group.2)
 
-rownames(pet.trend.monthly) <- 1:12
-colnames(pet.trend.monthly) <- station.names
+pet.trend.monthly <- data.frame(matrix(nrow = 12, ncol = no.stations)) # create empty table with 12 rows and 17 columns 
+pet.trend.annual <- data.frame(matrix(nrow = 34, ncol = no.stations)) # create empty table with 34 rows and 17 columns 
 
-rownames(pet.trend.annual) <- 1:34
-colnames(pet.trend.annual) <- station.names
+rownames(pet.trend.monthly) <- 1:12 # get rows names 
+colnames(pet.trend.monthly) <- station.names # get columns names from station.names
 
-for (month in 1:12) {
-  subset <- pet.monthly[pet.monthly$Group.1 == month, ]
-  for (station in 1:no.stations) {
+rownames(pet.trend.annual) <- 1:34 # get rows names 
+colnames(pet.trend.annual) <- station.names # get columns names from station.names
+
+for (month in 1:12) { # loop for month
+  subset <- pet.monthly[pet.monthly$Group.1 == month, ] # create subset and get from pet.monthly month
+  for (station in 1:no.stations) { # loop inside station start from 1 to 17
     pet.trend.monthly[month, station] <- MannKendall(subset[, station + 2])$tau # Kendall tau
     pet.trend.monthly[month, station] <- summary(lm(subset[,station+2] ~ c(1:nrow(subset))))$coefficient[2,1] # Regression line
   }
@@ -53,21 +52,22 @@ for (year in unique(pet.annual$Group.2)) {  # Use unique years from pet.annual
   }
 }
 
+# somehow it create table startin  g year from 1, so I just delete NA values
 pet.trend.annual <- na.omit(pet.trend.annual)
 
   
-my_palette <- colorRampPalette(c('red', 'white', 'blue'))
+my_palette <- colorRampPalette(c('red', 'white', 'blue')) # create list of colors for next dendrogram  
 
-png('PET_monthly_trend.png', width = 2000, height = 2000)
+png('PET_monthly_trend.png', width = 2000, height = 2000) # create empty png file with given range
 
 
-lmat_m <- rbind( c(5,3), c(2,1),c(4,4) )
-lwid_m <- c(1, 4)
-lhei_m <- c(2, 4, 2)
+lmat_m <- rbind( c(5,3), c(2,1),c(4,4) ) # parameters of 
+lwid_m <- c(1, 4) 
+lhei_m <- c(2, 4, 2) # relative height 
 
 m <- as.matrix(pet.trend.monthly)
 
-heatmap.2(m,lmat = lmat_m, lwid = lwid_m,lhei = lhei_m, Rowv = FALSE, Colv = TRUE,
+heatmap.2(m,lmat = lmat_m, lwid = lwid_m,lhei = lhei_m, Rowv = TRUE, Colv = TRUE,
           col = my_palette, breaks = c(seq(-1, 1, by = 0.1)), key = TRUE)
 
 dev.off()
@@ -87,3 +87,9 @@ heatmap.2(a,lmat = lmat_a, lwid = lwid_a,lhei = lhei_a, Rowv = FALSE, Colv = TRU
 dev.off() 
 
 
+
+mat <- matrix(rnorm(200), nrow = 20)
+colCols <- rep(c("red", "blue"), 5)
+heatmap.2(m, trace="none", ColSideColors = colCols,
+          lmat=rbind(c(5,4), c(3,2), c(0,1)),
+          lhei=c(2,4,0.2))

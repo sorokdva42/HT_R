@@ -79,7 +79,7 @@ lwid_a <- c(1, 4, 2)
 
 
 a <- as.matrix(pet.trend.annual)
-
+ 
 heatmap.2(a,lmat = lmat_a, lwid = lwid_a,lhei = lhei_a, Rowv = FALSE, Colv = TRUE,
           col = my_palette, breaks = c(seq(-1, 1, by = 0.1)), key = TRUE)
   
@@ -90,6 +90,6 @@ dev.off()
 
 mat <- matrix(rnorm(200), nrow = 20)
 colCols <- rep(c("red", "blue"), 5)
-heatmap.2(m, trace="none", ColSideColors = colCols,
+heatmap.2(m, trace="none", ColSideColors = colCols, Rowv = TRUE,
           lmat=rbind(c(5,4), c(3,2), c(0,1)),
-          lhei=c(2,4,0.2))
+          lhei=c(2,4,0.2),breaks = c(seq(-4e+05, 4e+05, by = 1e+04))) 

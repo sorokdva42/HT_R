@@ -2,7 +2,9 @@
 rm(list = ls()) # clear environment  
 library(Kendall); library(ggplot2); library(gplots) # export libraries
  
-setwd('C:/Users/PC/Documents/HT_R') # set working directory 
+
+
+setwd('C:/R_scripts/HT_R') # set working directory 
 
 pet.daily <- read.table('per.daily.txt', header = TRUE) # read table
 
@@ -65,9 +67,9 @@ lmat_m <- rbind( c(5,3), c(2,1),c(4,4) ) # parameters of
 lwid_m <- c(1, 4) 
 lhei_m <- c(2, 4, 2) # relative height 
 
-m <- as.matrix(pet.trend.monthly)
+m <- as.matrix(pet.trend.monthly) # create a matrix 
 
-heatmap.2(m,lmat = lmat_m, lwid = lwid_m,lhei = lhei_m, Rowv = TRUE, Colv = TRUE,
+heatmap.2(m, Rowv = TRUE, Colv = TRUE,
           col = my_palette, breaks = c(seq(-1, 1, by = 0.1)), key = TRUE)
 
 dev.off()
@@ -82,14 +84,12 @@ a <- as.matrix(pet.trend.annual)
 
 heatmap.2(a,lmat = lmat_a, lwid = lwid_a,lhei = lhei_a, Rowv = FALSE, Colv = TRUE,
           col = my_palette, breaks = c(seq(-1, 1, by = 0.1)), key = TRUE)
-  
+
+col_breaks = c(seq(-1,-0.5,length=100),  # forestgreen
+               seq(-0.5,0.5,length=100), # yellow
+               seq(0.5,1,length=100))    # red
+
 
 dev.off() 
 
 
-
-mat <- matrix(rnorm(200), nrow = 20)
-colCols <- rep(c("red", "blue"), 5)
-heatmap.2(m, trace="none", ColSideColors = colCols,
-          lmat=rbind(c(5,4), c(3,2), c(0,1)),
-          lhei=c(2,4,0.2))

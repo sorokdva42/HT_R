@@ -54,42 +54,33 @@ for (year in unique(pet.annual$Group.2)) {  # Use unique years from pet.annual
   }
 }
 
-# somehow it create table startin  g year from 1, so I just delete NA values
+# somehow it create table starting year from 1, so I just delete NA values
 pet.trend.annual <- na.omit(pet.trend.annual)
 
-  
-my_palette <- colorRampPalette(c('red', 'white', 'blue')) # create list of colors for next dendrogram  
-
-png('PET_monthly_trend.png', width = 2000, height = 2000) # create empty png file with given range
-
-
-lmat_m <- rbind( c(5,3), c(2,1),c(4,4) ) # parameters of 
-lwid_m <- c(1, 4) 
-lhei_m <- c(2, 4, 2) # relative height 
-
 m <- as.matrix(pet.trend.monthly) # create a matrix 
-
-heatmap.2(m, Rowv = TRUE, Colv = TRUE,
-          col = my_palette, breaks = c(seq(-1, 1, by = 0.1)), key = TRUE)
-
-dev.off()
-
-png('PET_annual_trend.png', width = 2000, height = 2000)
-lmat_a <- rbind( c(5,3,0), c(2,1,4) )
-lhei_a <- c(2, 4) 
-lwid_a <- c(1, 4, 2)
-
-
 a <- as.matrix(pet.trend.annual)
 
-heatmap.2(a,lmat = lmat_a, lwid = lwid_a,lhei = lhei_a, Rowv = FALSE, Colv = TRUE,
-          col = my_palette, breaks = c(seq(-1, 1, by = 0.1)), key = TRUE)
+png('PET_monthly_trend.png', width = 2000, height = 2000) # create empty png file with given range
+png('PET_annual_trend.png', width = 2000, height = 2000)
 
-col_breaks = c(seq(-1,-0.5,length=100),  # forestgreen
-               seq(-0.5,0.5,length=100), # yellow
-               seq(0.5,1,length=100))    # red
+heatmap.2(m,
+          main = "Heatmap",
+          trace = "none",        # Вимикаємо трасування
+          dendrogram = "both",   # Побудова дендрограми для рядків і стовпців
+          Rowv = TRUE,           # Впорядкування рядків
+          Colv = TRUE,           # Впорядкування стовпців
+          col = bluered(75),     # Використання кольорової шкали
+          scale = "column",         # Масштабування даних по рядках
+          margins = c(10, 10))    # Встановлення відступів для графіку
 
+
+heatmap.2(a,
+          main = "Heatmap",
+          Rowv = TRUE,
+          Colv = TRUE,           
+          col = bluered(75),
+          scale = "column",
+          margins = c(10, 10),
+          key = TRUE)
 
 dev.off() 
-
-

@@ -52,7 +52,7 @@ for (year in unique(pet.annual$Group.2)) {  # Use unique years from pet.annual
       pet.trend.annual[year, station] <- NA  # Assign NA if subset has less than two rows
     }
   }
-}
+} 
 
 # somehow it create table starting year from 1, so I just delete NA values
 pet.trend.annual <- na.omit(pet.trend.annual)
